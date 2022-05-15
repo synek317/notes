@@ -49,13 +49,28 @@ For implementation-oriented RFCs (e.g. for compiler internals), this section sho
 # Reference-level explanation
 [reference-level-explanation]: #reference-level-explanation
 
-This is the technical portion of the RFC. Explain the design in sufficient detail that:
+> This is the technical portion of the RFC. Explain the design in sufficient detail that:
+> 
+> - Its interaction with other features is clear.
+> - It is reasonably clear how the feature would be implemented.
+> - Corner cases are dissected by example.
+> 
+> The section should return to the examples given in the previous section, and explain more fully how the detailed proposal makes those examples work.
 
-- Its interaction with other features is clear.
-- It is reasonably clear how the feature would be implemented.
-- Corner cases are dissected by example.
 
-The section should return to the examples given in the previous section, and explain more fully how the detailed proposal makes those examples work.
+The `f` prefix should be left-associative, e.g.
+
+    f"foo".bar()
+    
+desugars to 
+
+    (f"foo").bar()
+    
+and NOT to
+
+    f("foo".bar())
+    
+Since the `format!` macro expects a const literal and right-associativity (`f("foo".bar())`) would only make sense in very rare situations. At the same time, right-associative binding would lead to possible errors if `.bar()` could return different results, e.g. `"bar"` vs `"bar{}"`. 
 
 # Drawbacks
 [drawbacks]: #drawbacks
